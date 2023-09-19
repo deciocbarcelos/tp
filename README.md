@@ -2,5 +2,6 @@
 
 Nome: Décio Cançado Barcelos - 2023/02
 Matrícula:5782
+Nome: José Avelar  
 
-Objetivo: o objetivo deste projeto é desenvolver um sistema para que calcula o indice de massa corporal de uma pessoa.
+Objetivo: o objetivo deste projeto é desenvolver um sistema de gerenciamento de pacienetes para uma clinica médica.
