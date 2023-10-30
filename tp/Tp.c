@@ -4,8 +4,17 @@
 
 #define MAX_PACIENTES 100
 
+// Estrutura para representar um paciente
+struct Paciente {
+    char nome[500];
+    int idade;
+    char sintomas[500];
+    int grau_urgencia;
+};
+
 int main() {
-    int pacientesdia, i;
+    struct Paciente pacientes[MAX_PACIENTES];
+    int pacientesdia;
 
     printf("Digite o numero de pacientes marcados para o dia hoje (max 100): ");
     scanf("%d", &pacientesdia);
@@ -15,25 +24,17 @@ int main() {
         return 1;
     }
 
-    char nomes[MAX_PACIENTES][500];
-    int idades[MAX_PACIENTES];
-    char sintomas[MAX_PACIENTES][500];
-    int grau_urgencia[MAX_PACIENTES];
-    char pesquisa[500];
-
-    int contador = 0;
-
-    printf("Digite os dados dos pacientes:\n");
-    for (i = 0; i < pacientesdia; i++) {
+    // Entrada de dados dos pacientes
+    for (int i = 0; i < pacientesdia; i++) {
         printf("Paciente %d:\n", i + 1);
         printf("Nome: ");
-        scanf("%s", nomes[i]);
+        scanf("%s", pacientes[i].nome);
         printf("Idade: ");
-        scanf("%d", &idades[i]);
+        scanf("%d", &pacientes[i].idade);
         printf("Sintomas: ");
-        scanf("%s", sintomas[i]);
+        scanf("%s", pacientes[i].sintomas);
         printf("Grau de urgencia (1 a 10): ");
-        scanf("%d", &grau_urgencia[i]);
+        scanf("%d", &pacientes[i].grau_urgencia);
     }
 
     int opcao;
@@ -46,35 +47,82 @@ int main() {
     scanf("%d", &opcao);
 
     switch (opcao) {
-        case 1:  // Ordem Alfabética
-            // Implemente a ordenação por ordem alfabética aqui
-            break;
-        case 2:  // Idade Crescente
-            // Implemente a ordenação por idade crescente aqui
-            break;
-        case 3:  // Grau de Urgencia Decrescente
-            // Implemente a ordenação por grau de urgência decrescente aqui
-            break;
-        case 4:
-
-            printf("Digite o nome, idade, sintomas ou grau de urgencia a ser pesquisado: ");
-            scanf("%s", pesquisa);
-
-            printf("Resultado da pesquisa:\n");
-            for (i = 0; i < pacientesdia; i++) {
-                if (strcmp(nomes[i], pesquisa) == 0 || idades[i] == atoi(pesquisa) ||
-                    strcmp(sintomas[i], pesquisa) == 0 || grau_urgencia[i] == atoi(pesquisa)) {
-                    printf("Paciente %d:\n", i + 1);
-                    printf("Nome: %s\n", nomes[i]);
-                    printf("Idade: %d\n", idades[i]);
-                    printf("Sintomas: %s\n", sintomas[i]);
-                    printf("Grau de urgencia: %d\n", grau_urgencia[i]);
+        case 1: // Ordem Alfabética
+            for (int i = 0; i < pacientesdia; i++) {
+                for (int j = i + 1; j < pacientesdia; j++) {
+                    if (strcmp(pacientes[i].nome, pacientes[j].nome) > 0) {
+                        // Trocar pacientes
+                        struct Paciente temp = pacientes[i];
+                        pacientes[i] = pacientes[j];
+                        pacientes[j] = temp;
+                    }
                 }
             }
             break;
+        case 2: // Idade Crescente
+            for (int i = 0; i < pacientesdia; i++) {
+                for (int j = i + 1; j < pacientesdia; j++) {
+                    if (pacientes[i].idade > pacientes[j].idade) {
+                        // Trocar pacientes
+                        struct Paciente temp = pacientes[i];
+                        pacientes[i] = pacientes[j];
+                        pacientes[j] = temp;
+                    }
+                }
+            }
+            break;
+        case 3: // Grau de Urgencia Decrescente
+            for (int i = 0; i < pacientesdia; i++) {
+                for (int j = i + 1; j < pacientesdia; j++) {
+                    if (pacientes[i].grau_urgencia < pacientes[j].grau_urgencia) {
+                        // Trocar pacientes
+                        struct Paciente temp = pacientes[i];
+                        pacientes[i] = pacientes[j];
+                        pacientes[j] = temp;
+                    }
+                }
+            }
+            break;
+        case 4: // Pesquisar Paciente
+    {
+        char termo_pesquisa[500];
+        printf("Digite o nome, idade, sintomas ou grau de urgencia a ser pesquisado: ");
+        scanf("%s", termo_pesquisa);
+
+        int pacientes_encontrados = 0;
+
+        printf("Resultado da pesquisa:\n");
+        for (int i = 0; i < pacientesdia; i++) {
+            if (strstr(pacientes[i].nome, termo_pesquisa) ||
+                pacientes[i].idade == atoi(termo_pesquisa) ||
+                strstr(pacientes[i].sintomas, termo_pesquisa) ||
+                pacientes[i].grau_urgencia == atoi(termo_pesquisa)) {
+                printf("Paciente %d:\n", i + 1);
+                printf("Nome: %s\n", pacientes[i].nome);
+                printf("Idade: %d\n", pacientes[i].idade);
+                printf("Sintomas: %s\n", pacientes[i].sintomas);
+                printf("Grau de urgencia: %d\n", pacientes[i].grau_urgencia);
+                pacientes_encontrados++;
+            }
+        }
+
+        if (pacientes_encontrados == 0) {
+            printf("Nenhum paciente corresponde ao critério de pesquisa.\n");
+        }
+    }
+    break;
         default:
             printf("Opcao invalida\n");
             return 1;
+    }
+
+    printf("Lista de pacientes ordenados:\n");
+    for (int i = 0; i < pacientesdia; i++) {
+        printf("Paciente %d:\n", i + 1);
+        printf("Nome: %s\n", pacientes[i].nome);
+        printf("Idade: %d\n", pacientes[i].idade);
+        printf("Sintomas: %s\n", pacientes[i].sintomas);
+        printf("Grau de urgencia: %d\n", pacientes[i].grau_urgencia);
     }
 
     return 0;
