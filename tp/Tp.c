@@ -43,6 +43,7 @@ int main() {
     printf("2. Idade Crescente\n");
     printf("3. Grau de Urgencia Decrescente\n");
     printf("4. Pesquisar Paciente\n");
+    printf("5. Remover Paciente\n");
     printf("Opcao: ");
     scanf("%d", &opcao);
 
@@ -111,6 +112,33 @@ int main() {
         }
     }
     break;
+    case 5: // Remover Paciente
+{
+    char nome_para_remover[500];
+    printf("Digite o nome do paciente a ser removido: ");
+    scanf("%s", nome_para_remover);
+
+    int paciente_removido = 0;
+
+    for (int i = 0; i < pacientesdia; i++) {
+        if (strcmp(pacientes[i].nome, nome_para_remover) == 0) {
+            // Deslocamento  dos pacientes seguintes para preencher o espaço vazio
+            for (int j = i; j < pacientesdia - 1; j++) {
+                pacientes[j] = pacientes[j + 1];
+            }
+            pacientesdia--;
+            paciente_removido = 1;
+            printf("Paciente removido com sucesso.\n");
+            break; // Nenhum paciente com o mesmo nome será encontrado
+        }
+    }
+
+    if (!paciente_removido) {
+        printf("Paciente não encontrado. Nenhum paciente removido.\n");
+    }
+}
+break;
+
         default:
             printf("Opcao invalida\n");
             return 1;
